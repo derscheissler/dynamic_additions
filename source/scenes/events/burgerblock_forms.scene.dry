@@ -2,7 +2,7 @@ title: Dietrich brokers the <span style="color: #4A5C2A;">Bürgerblock</span>
 subtitle: A desperate alliance to save Brüning
 new-page: true
 tags: event
-view-if: dvp_leader == "Dingley" and z_leader == "Stegerwald" ((dnf_votes + nsdap_votes + kpd_votes > neo_weimar_coalition) or (dnvp_leader == "Hugenberg" and kvp_formed and dnvp_votes + nsdap_votes + kpd_votes >= neo_weimar_coalition))
+view-if: dvp_leader == "Dingley" and z_leader == "Stegerwald" and ((dnf_votes + nsdap_votes + kpd_votes > neo_weimar_coalition) or (dnvp_leader == "Hugenberg" and kvp_formed and dnvp_votes + nsdap_votes + kpd_votes >= neo_weimar_coalition))
 priority: -1
 max-visits: 1
 
