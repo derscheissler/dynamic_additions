@@ -2,13 +2,13 @@ title: Dietrich brokers the <span style="color: #4A5C2A;">Bürgerblock</span>
 subtitle: A desperate alliance to save Brüning
 new-page: true
 tags: event
-view-if: ddp_leader == "Dietrich" and ((total_bruning_time >= 6 and dnf_votes + nsdap_votes + kpd_votes > neo_weimar_coalition) or (dnvp_leader == "Hugenberg" and kvp_formed and dnvp_votes + nsdap_votes + kpd_votes >= neo_weimar_coalition))
+view-if: dvp_leader == "Dingley" and ((total_bruning_time >= 6 and dnf_votes + nsdap_votes + kpd_votes > neo_weimar_coalition) or (dnvp_leader == "Hugenberg" and kvp_formed and dnvp_votes + nsdap_votes + kpd_votes >= neo_weimar_coalition))
 priority: -1
 max-visits: 1
 
 == The United Bourgeois Front
 
-With extremists gaining ground on both flanks, Hermann Dietrich has been working behind the scenes to forge an unprecedented alliance. The solution, according to Dietrich: a grand front of all constitutional parties as a firewall against extremism.
+With extremists gaining ground on both flanks, chancellor Brüning and Dingley have been working behind the scenes to forge an unprecedented alliance. The solution, according to Dietrich: a grand front of all constitutional parties as a firewall against extremism.
 
 -@coalition_forms: The <span style="color: #4A5C2A;">Bürgerblock</span> is established!
 
