@@ -1,0 +1,54 @@
+title: Dietrich brokers the <span style="color: #4A5C2A;">Bürgerblock</span>
+subtitle: A desperate alliance to save Brüning
+new-page: true
+tags: event
+view-if: ddp_leader == "Dietrich" and ((total_bruning_time >= 6 and dnf_votes + nsdap_votes + kpd_votes > neo_weimar_coalition) or (dnvp_leader == "Hugenberg" and kvp_formed and dnvp_votes + nsdap_votes + kpd_votes >= neo_weimar_coalition))
+priority: -1
+max-visits: 1
+
+== The United Bourgeois Front
+
+With extremists gaining ground on both flanks, Hermann Dietrich has been working behind the scenes to forge an unprecedented alliance. The solution, according to Dietrich: a grand front of all constitutional parties as a firewall against extremism.
+
+-@coalition_forms: The <span style="color: #4A5C2A;">Bürgerblock</span> is established!
+
+@coalition_forms
+on-arrival: burgerblock_formed = 1
+go-to: bloc_structure
+Ideologically, the coalition is a masterpiece of creative ambiguity. Somehow, this is supposed to work.
+[? if dnvp_ideology == "Moderate": With even the DNVP embracing republican legitimacy for the first time, their participation lends crucial credibility to the alliance ?][? if kvp_formed: though the radical <span style="color: #3E88B3;">DNVP</span> stays outside, viewing the coalition as a betrayal of conservative principles, the <span style="color: #0087DC;">KVP</span> eagerly joins ?]
+
+@bloc_structure
+on-arrival: {!
+Q.burgerblock_percentage = Math.round((Q.dvp_r + Q.ddp_r + Q.z_r + Q.bvp_r + Q.other_r));
+Q.absorbed_parties = "DVP, DDP, Zentrum, BVP";
+if (Q.other_r > 0) {
+Q.absorbed_parties += ", and various smaller bourgeois parties";
+}
+if (Q.kvp_formed) {
+Q.burgerblock_percentage += Q.kvp_r;
+Q.absorbed_parties += ", KVP";
+} else if (Q.dnvp_ideology == "Moderate") {
+Q.burgerblock_percentage += Q.dnvp_r;
+Q.absorbed_parties += ", DNVP";
+}
+
+Q.new_middle_dvp += 2;
+Q.new_middle_ddp += 2;
+Q.old_middle_z += 1;
+Q.old_middle_dvp += 1;
+Q.rural_z += 1;
+if (Q.kvp_formed) {
+Q.rural_kvp += 2;
+Q.old_middle_kvp += 2;
+} else if (Q.dnvp_ideology == "Moderate") {
+Q.rural_dnvp += 1;
+Q.old_middle_dnvp += 1;
+}
+
+Q.new_middle_nsdap -= 1;
+Q.old_middle_nsdap -= 1;
+Q.workers_kpd -= 1;
+!}
+
+The Bürgerblock commands [+ burgerblock_percentage +]% of the Reichstag, comprising the [+ absorbed_parties +].
