@@ -1,14 +1,14 @@
-title: Dingley brokers the <span style="color: #4A5C2A;">Bürgerblock</span>
+title: Dingeldey brokers the <span style="color: #4A5C2A;">Bürgerblock</span>
 subtitle: A desperate alliance to save Brüning
 new-page: true
 tags: event
-view-if: dvp_leader == "Dingley" and z_leader == "Stegerwald" and ((dnf_r + nsdap_r + kpd_r > neo_weimar_coalition) or (dnvp_leader == "Hugenberg" and kvp_formed and dnvp_r + nsdap_r + kpd_r >= neo_weimar_coalition))
+view-if: dvp_leader == "Dingeldey" and z_leader == "Stegerwald" and ((dnf_r + nsdap_r + kpd_r > neo_weimar_coalition) or (dnvp_leader == "Hugenberg" and kvp_formed and dnvp_r + nsdap_r + kpd_r >= neo_weimar_coalition))
 priority: 1
 max-visits: 1
 
 == The United Bourgeois Front
 
-With extremists gaining ground on both flanks, chancellor Brüning and Dingley have been working behind the scenes to forge an unprecedented alliance. The solution, according to Dietrich: a grand front of all constitutional parties as a firewall against extremism.
+With extremists gaining ground on both flanks, Stegerwald and Dingeldey have been working behind the scenes to forge an unprecedented alliance. The solution, according to Dietrich: a grand front of all constitutional parties as a firewall against extremism.
 
 -@coalition_forms: The <span style="color: #4A5C2A;">Bürgerblock</span> is established!
 
