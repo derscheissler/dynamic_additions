@@ -25,35 +25,49 @@ Ideologically, the coalition is a masterpiece of creative ambiguity. Domestic po
 
 @bloc_structure
 on-arrival: {!
-Q.burgerblock_percentage = Math.round((Q.dvp_r + Q.ddp_r + Q.z_r + Q.bvp_r + Q.other_r));
-Q.absorbed_parties = '<span style="color: #C0A054;">DVP</span>, <span style="color: #D3C24D;">DDP</span>, <span style="color: #000000;">CVP</span>, <span style="color: #A2D8E0;">BVP</span>';
-if (Q.other_r > 0) {
-Q.absorbed_parties += ", various smaller bourgeois parties";
-}
-if (Q.kvp_formed) {
-Q.burgerblock_percentage += Q.kvp_r;
-Q.absorbed_parties += ' and the <span style="color: #0087DC;">KVP</span>';
-} else if (Q.dnvp_ideology != "Radical") {
-Q.burgerblock_percentage += Q.dnvp_r;
-Q.absorbed_parties += ' and the <span style="color: #3E88B3;">DNVP</span>';
-}
+    Q.burgerblock_formed = 1;
+    Q.burgerblock_percentage = Math.round((Q.dvp_r + Q.ddp_r + Q.z_r + Q.bvp_r + Q.other_r));
+    Q.absorbed_parties = '<span style="color: #C0A054;">DVP</span>, <span style="color: #D3C24D;">DDP</span>, <span style="color: #000000;">CVP</span>, <span style="color: #A2D8E0;">BVP</span>';
+    if (Q.other_r > 0) {
+        Q.absorbed_parties += ", various smaller bourgeois parties";
+    }
 
-Q.new_middle_dvp += 2;
-Q.new_middle_ddp += 2;
-Q.old_middle_z += 1;
-Q.old_middle_dvp += 1;
-Q.rural_z += 1;
-if (Q.kvp_formed) {
-Q.rural_kvp += 2;
-Q.old_middle_kvp += 2;
-} else if (Q.dnvp_ideology == "Moderate") {
-Q.rural_dnvp += 1;
-Q.old_middle_dnvp += 1;
-}
+    Q.dvp_burgerblock_dissent = 0.1;
+    Q.ddp_burgerblock_dissent = 0.15;
+    Q.z_burgerblock_dissent = 0.05;
+    Q.bvp_burgerblock_dissent = 0.05;
+    Q.other_burgerblock_dissent = 0;
 
-Q.new_middle_nsdap -= 1;
-Q.old_middle_nsdap -= 1;
-Q.workers_kpd -= 1;
+    if (Q.kvp_formed) {
+        Q.burgerblock_percentage += Q.kvp_r;
+        Q.absorbed_parties += ' and the <span style="color: #0087DC;">KVP</span>';
+        Q.kvp_burgerblock_dissent = 0.05;
+        Q.dnvp_burgerblock_dissent = 0;
+    } else if (Q.dnvp_ideology != "Radical") {
+        Q.burgerblock_percentage += Q.dnvp_r;
+        Q.absorbed_parties += ' and the <span style="color: #3E88B3;">DNVP</span>';
+        Q.dnvp_burgerblock_dissent = 0.2;
+        Q.kvp_burgerblock_dissent = 0;
+    } else {
+        Q.dnvp_burgerblock_dissent = 0;
+        Q.kvp_burgerblock_dissent = 0;
+    }
+
+    Q.new_middle_dvp += 2;
+    Q.new_middle_ddp += 2;
+    Q.old_middle_z += 1;
+    Q.old_middle_dvp += 1;
+    Q.rural_z += 1;
+    if (Q.kvp_formed) {
+        Q.rural_kvp += 2;
+        Q.old_middle_kvp += 2;
+    } else if (Q.dnvp_ideology == "Moderate") {
+        Q.rural_dnvp += 1;
+        Q.old_middle_dnvp += 1;
+    }
+    Q.new_middle_nsdap -= 1;
+    Q.old_middle_nsdap -= 1;
+    Q.workers_kpd -= 1;
 !}
 
 The <span style="color: #4A5C2A;">Bürgerblock</span> commands [+ burgerblock_percentage +]% of the Reichstag, comprising the [+ absorbed_parties +].
