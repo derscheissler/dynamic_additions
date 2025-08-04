@@ -5,6 +5,18 @@ max-visits: 1
 tags: event
 new-page: true
 priority: 2
+on-display: {!  
+    var cardEl = document.createElement('div');  
+    cardEl.className = "face-figure2";  
+
+    var image = new Image();  
+    image.className = "face-img";  
+    image.src = "img/neudeck.jpg";  
+
+    cardEl.appendChild(image);  
+    var contentDiv = document.querySelector("#page #mid_panel #content");
+    contentDiv.appendChild(cardEl);
+!}
 on-arrival: {!
     osthilfe_cut_attempted = 1;
     
