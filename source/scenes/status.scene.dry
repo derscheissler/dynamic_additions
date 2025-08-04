@@ -27,7 +27,7 @@ Resources available: [+ resources +]
 
 [? if bruning_time and president == "Hindenburg": Hindenburg's approval: [+ hindenburg_angry_bruning : hindenburg_angry_bruning +] ?]
 
-[? if burgerblock_formed: The <span style="color: #4A5C2A;">Bürgerblock</span> commands: [+ burgerblock_percentage +]% of the Reichstag, comprising the [+ absorbed_parties +] ?]
+[? if burgerblock_formed: The <span style="color: #4A5C2A;">Bürgerblock</span> commands: [+ burgerblock_current_strength +]% of the Reichstag, comprising the [+ absorbed_parties +] ?]
 
 [? if spd_government_burden_seen: Government Goals: [? if goal_spd_cancel == 0: [+ goal_spd_total +]?][? if goal_spd_cancel >= 1: Failed?] / 2 completed, due in [+ spd_government_burden_timer +] months ?]
 
