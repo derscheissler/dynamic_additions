@@ -3,7 +3,7 @@ subtitle: A desperate alliance to save Brüning
 new-page: true
 tags: event
 view-if: dvp_leader == "Dingley" and z_leader == "Stegerwald" and ((dnf_r + nsdap_r + kpd_r > neo_weimar_coalition) or (dnvp_leader == "Hugenberg" and kvp_formed and dnvp_r + nsdap_r + kpd_r >= neo_weimar_coalition))
-priority: -1
+priority: 1
 max-visits: 1
 
 == The United Bourgeois Front
@@ -17,7 +17,7 @@ on-arrival: burgerblock_formed = 1
 go-to: bloc_structure
 
 Ideologically, the coalition is a masterpiece of creative ambiguity. Somehow, this is supposed to work.
-[? if dnvp_ideology == "Moderate": With even the DNVP embracing republican legitimacy for the first time, their participation lends crucial credibility to the alliance ?][? if kvp_formed: though the radical <span style="color: #3E88B3;">DNVP</span> stays outside, viewing the coalition as a betrayal of conservative principles, the <span style="color: #0087DC;">KVP</span> eagerly joins ?]
+[? if dnvp_ideology != "Radical": With even the DNVP embracing republican legitimacy for the first time, their participation lends crucial credibility to the alliance ?][? if kvp_formed: though the radical <span style="color: #3E88B3;">DNVP</span> stays outside, viewing the coalition as a betrayal of conservative principles, the <span style="color: #0087DC;">KVP</span> eagerly joins ?]
 
 @bloc_structure
 on-arrival: {!
@@ -29,7 +29,7 @@ Q.absorbed_parties += ", and various smaller bourgeois parties";
 if (Q.kvp_formed) {
 Q.burgerblock_percentage += Q.kvp_r;
 Q.absorbed_parties += ", KVP";
-} else if (Q.dnvp_ideology == "Moderate") {
+} else if (Q.dnvp_ideology != "Radical") {
 Q.burgerblock_percentage += Q.dnvp_r;
 Q.absorbed_parties += ", DNVP";
 }
