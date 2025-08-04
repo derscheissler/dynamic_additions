@@ -115,12 +115,7 @@ on-arrival: {!
     Q.dvp_burgerblock_dissent += 0.15;
     Q.z_burgerblock_dissent += 0.1;
 !}
+
 Faced with open revolt from the <span style="color: #3E88B3;">DNVP</span>'s agrarian wing and the looming threat of a presidential veto, the government buckles. The *Osthilfe* cuts are withdrawn in a humiliating public reversal. The <span style="color: #4A5C2A;">Bürgerblock</span> appears weak and divided, its authority shattered. The Chancellor's position seems more precarious than ever.
 
--@joever: Nice having you, Brüning.
-
-@joever
-on-arrival: {!
-            }
-
-Mothing ever happens.
+-Nice having you, Brüning.
