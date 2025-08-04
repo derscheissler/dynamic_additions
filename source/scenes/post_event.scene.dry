@@ -4330,11 +4330,11 @@ if (Q.bruning_time > 1) {
 }
 
 if (Q.burgerblock_formed) {
-    Q.burgerblock_current_strength = Q.dvp_r + Q.ddp_r + Q.z_r + Q.bvp_r + Q.other_r;
+    Q.burgerblock_current_strength = Q.dvp_votes + Q.ddp_votes + Q.z_votes + Q.bvp_votes + Q.other_votes;
     if (Q.kvp_formed) {
-        Q.burgerblock_current_strength += Q.kvp_r;
+        Q.burgerblock_current_strength += Q.kvp_votes;
     } else if (Q.dnvp_ideology != "Radical") {
-        Q.burgerblock_current_strength += Q.dnvp_r;
+        Q.burgerblock_current_strength += Q.dnvp_votes;
     }
     Q.burgerblock_current_strength = Math.round(Q.burgerblock_current_strength);
 
