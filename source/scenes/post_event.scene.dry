@@ -4328,7 +4328,20 @@ if (Q.bruning_time > 1) {
         Q.hindenburg_angry_bruning -= ((Q.hindenburg_angry_bruning_new - Q.hindenburg_angry_bruning_newer) / 5);
     }
 }
+if (Q.burgerblock_formed) {
+        Q.burgerblock_current_strength = Q.dvp_r + Q.ddp_r + Q.z_r + Q.bvp_r + Q.other_r;
 
+        
+        if (Q.kvp_formed) {
+            Q.burgerblock_current_strength += Q.kvp_r;
+        } else if (Q.dnvp_ideology != "Radical") {
+            Q.burgerblock_current_strength += Q.dnvp_r;
+        }
+
+        
+        Q.burgerblock_current_strength = Math.round(Q.burgerblock_current_strength);
+    }
+}
 if (!Q.nazi_peak_triggered && !Q.rubicon) {
     Q.nazi_peak_base = 25;
     Q.nazi_peak = Q.nazi_peak_base;
