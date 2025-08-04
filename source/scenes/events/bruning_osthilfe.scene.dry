@@ -5,18 +5,6 @@ max-visits: 1
 tags: event
 new-page: true
 priority: 2
-on-display: {!  
-    var cardEl = document.createElement('div');  
-    cardEl.className = "face-figure2";  
-
-    var image = new Image();  
-    image.className = "face-img";  
-    image.src = "img/neudeck.jpg";  
-
-    cardEl.appendChild(image);  
-    var contentDiv = document.querySelector("#page #mid_panel #content");
-    contentDiv.appendChild(cardEl);
-!}
 
 == Brüning's Gamble
 
@@ -53,21 +41,19 @@ The moderate <span style="color: #3E88B3;">DNVP</span> leadership within the gov
 
 @condemn_all
 on-arrival: {! Q.player_choice_osthilfe = 'condemn'; !}
-go-to: results
+go-to: outcome_success, outcome_failure
 
 @tolerate_bruning
 on-arrival: {! Q.player_choice_osthilfe = 'tolerate'; !}
-go-to: results
+go-to: outcome_success, outcome_failure
 
 @stay_silent
 on-arrival: {! Q.player_choice_osthilfe = 'silent'; !}
-go-to: results
+go-to: outcome_success, outcome_failure
 
-@results
-go-to-if: osthilfe_cut_succeeds == 1, outcome_success
-go-to: outcome_failure
 
 @outcome_success
+view-if: osthilfe_cut_succeeds == 1
 on-arrival: {!
     Q.osthilfe_cut = 1;
     Q.hindenburg_angry_bruning += 25;
@@ -102,18 +88,25 @@ on-arrival: {!
         }
     }
 !}
-
 The government manages to force the cuts through. It is a stunning display of political force that solidifies the <span style="color: #4A5C2A;">Bürgerblock</span>'s liberal wing, but the victory is costly. Rural voters, feeling abandoned, are fleeing to the <span style="color: #7A3C00;">Nazis</span>, and President von Hindenburg sees this as an unforgivable personal insult.
+- The government has won, for now.
 
 @outcome_failure
+view-if: not osthilfe_cut_succeeds == 1
 on-arrival: {!
-    Q.hindenburg_angry_bruning -=30
-    Q.new_middle_dvp -= 4;
-    Q.old_middle_z -= 10;
+    Q.hindenburg_angry_bruning -= 5;
+    Q.bruning_support -= 3;
+    Q.bruning_coalition_loss += 2;
+    Q.new_middle_dvp -= 1;
+    Q.old_middle_z -= 1;
     Q.new_middle_spd += 1;
     Q.old_middle_spd += 1;
     Q.dvp_burgerblock_dissent += 0.15;
     Q.z_burgerblock_dissent += 0.1;
 !}
-
 Faced with open revolt from the <span style="color: #3E88B3;">DNVP</span>'s agrarian wing and the looming threat of a presidential veto, the government buckles. The *Osthilfe* cuts are withdrawn in a humiliating public reversal. The <span style="color: #4A5C2A;">Bürgerblock</span> appears weak and divided, its authority shattered. The Chancellor's position seems more precarious than ever.
+-@joever: Nice having you, Brüning.
+
+@joever
+on-arrival: {!
+}
