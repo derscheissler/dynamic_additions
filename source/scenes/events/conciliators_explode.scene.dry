@@ -2,7 +2,7 @@ title: The <span style="color: #700000;">**KPD**</span> purges the Conciliators
 subtitle: Thälmann solidifies his grip, turning the party into a tool of Moscow
 new-page: true
 tags: event
-view-if: not in_left_front and not in_popular_front and burgerblock_formed == 1 and kpd_relation < 40 and pro_republic < 65 and emergency_cuts_seen == 1 and sapd_formed == 1 and year == 1931 and month == 9
+view-if: not in_left_front and not in_popular_front and burgerblock_formed == 1 and kpd_relation < 80 and pro_republic < 65 and sapd_formed and year == 1931 and month == 9
 max-visits: 1
 
 = The Moscow Line Hardens
