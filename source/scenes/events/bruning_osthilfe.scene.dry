@@ -49,16 +49,16 @@ The moderate <span style="color: #3E88B3;">DNVP</span> leadership within the gov
 - @stay_silent: Remain silent. Let them tear each other apart.
 
 @condemn_all
-on-arrival: Q.player_choice_osthilfe = 'condemn'
-go-to: osthilfe_cut_succeeds == 1 ? outcome_success : outcome_failure
+on-arrival: player_choice_osthilfe = "condemn"
+go-to: outcome_success if osthilfe_cut_succeeds == 1; outcome_failure
 
 @tolerate_bruning
-on-arrival: Q.player_choice_osthilfe = 'tolerate'
-go-to: osthilfe_cut_succeeds == 1 ? outcome_success : outcome_failure
+on-arrival: player_choice_osthilfe = "tolerate"
+go-to: outcome_success if osthilfe_cut_succeeds == 1; outcome_failure
 
 @stay_silent
-on-arrival: Q.player_choice_osthilfe = 'silent'
-go-to: osthilfe_cut_succeeds == 1 ? outcome_success : outcome_failure
+on-arrival: player_choice_osthilfe = "silent"
+go-to: outcome_success if osthilfe_cut_succeeds == 1; outcome_failure
 
 @outcome_success
 on-arrival: {!
@@ -68,7 +68,7 @@ on-arrival: {!
     Q.bruning_support += 2;
     
     // Extra anger if SPD condemned
-    if (Q.player_choice_osthilfe == 'condemn') {
+    if (Q.player_choice_osthilfe == "condemn") {
         Q.hindenburg_angry_bruning += 5;
     }
     
