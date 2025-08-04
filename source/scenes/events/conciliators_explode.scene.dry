@@ -21,11 +21,11 @@ on-arrival: {!
     Q.kpd_relation -= 20;
     Q.communist_coalition = 0;
 
-    Q.workers_kpd -= 10;
-    Q.workers_spd += 4;
+    Q.workers_kpd -= 20;
+    Q.workers_spd += 13;
     
-    Q.unemployed_kpd -= 4;
-    Q.unemployed_spd += 1;
+    Q.unemployed_kpd -= 10;
+    Q.unemployed_spd += 4;
     
     left_faction_strength += 10
     !}
