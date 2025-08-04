@@ -4330,17 +4330,40 @@ if (Q.bruning_time > 1) {
 }
 
 if (Q.burgerblock_formed) {
-        Q.burgerblock_current_strength = Q.dvp_r + Q.ddp_r + Q.z_r + Q.bvp_r + Q.other_r;
+    Q.burgerblock_current_strength = Q.dvp_r + Q.ddp_r + Q.z_r + Q.bvp_r + Q.other_r;
+    if (Q.kvp_formed) {
+        Q.burgerblock_current_strength += Q.kvp_r;
+    } else if (Q.dnvp_ideology != "Radical") {
+        Q.burgerblock_current_strength += Q.dnvp_r;
+    }
+    Q.burgerblock_current_strength = Math.round(Q.burgerblock_current_strength);
 
-        
-        if (Q.kvp_formed) {
-            Q.burgerblock_current_strength += Q.kvp_r;
-        } else if (Q.dnvp_ideology != "Radical") {
-            Q.burgerblock_current_strength += Q.dnvp_r;
-        }
+    Q.burgerblock_total_dissent = 
+        Q.dvp_burgerblock_dissent +
+        Q.ddp_burgerblock_dissent +
+        Q.z_burgerblock_dissent +
+        Q.bvp_burgerblock_dissent +
+        Q.other_burgerblock_dissent +
+        Q.kvp_burgerblock_dissent +
+        Q.dnvp_burgerblock_dissent;
 
+    if (Q.burgerblock_total_dissent < 0) {
+        Q.burgerblock_total_dissent = 0;
+    }
+    
+    if (Q.burgerblock_total_dissent >= 1.0) {
+        Q.burgerblock_formed = 0;
+        Q.burgerblock_failed = 1;
         
-        Q.burgerblock_current_strength = Math.round(Q.burgerblock_current_strength)
+        Q.dvp_burgerblock_dissent = 0;
+        Q.ddp_burgerblock_dissent = 0;
+        Q.z_burgerblock_dissent = 0;
+        Q.bvp_burgerblock_dissent = 0;
+        Q.other_burgerblock_dissent = 0;
+        Q.kvp_burgerblock_dissent = 0;
+        Q.dnvp_burgerblock_dissent = 0;
+        Q.burgerblock_total_dissent = 0;
+    }
 }
 
 if (!Q.nazi_peak_triggered && !Q.rubicon) {
