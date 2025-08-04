@@ -1,44 +1,57 @@
 title: The Battle for Osthilfe
-subtitle: The Bürgerblock government gambles on cutting agrarian subsidies
+subtitle: The <span style="color: #4A5C2A;">Bürgerblock</span> government gambles on cutting agrarian subsidies
 view-if: burgerblock_formed == 1 and chancellor == "Brüning" and year >= 1931 and not osthilfe_cut_attempted
 max-visits: 1
 tags: event
 new-page: true
 priority: 2
+on-display: {!  
+    var cardEl = document.createElement('div');  
+    cardEl.className = "face-figure2";  
 
-= The Battle for Osthilfe
+    var image = new Image();  
+    image.className = "face-img";  
+    image.src = "img/neudeck.jpg";  
 
-@opening
+    cardEl.appendChild(image);  
+    var contentDiv = document.querySelector("#page #mid_panel #content");
+    contentDiv.appendChild(cardEl);
+!}
 on-arrival: {!
-    Q.osthilfe_cut_attempted = 1;
+    osthilfe_cut_attempted = 1;
     
     // Calculate success score
-    let success_score = 50;
+    var success_score = 50;
     
     // KVP formed makes success impossible
-    if (Q.kvp_formed == 1) {
+    if (kvp_formed == 1) {
         success_score = 0;
     } else {
         // Positive modifiers
-        if (Q.bruning_support) {
-            success_score += Q.bruning_support;
+        if (bruning_support) {
+            success_score += bruning_support;
         }
-        if (Q.emergency_cuts_seen == 1) {
+        if (emergency_cuts_seen == 1) {
             success_score += 15;
         }
-        if (Q.budget) {
-            success_score += (6 - Q.budget) * 2;
+        if (budget) {
+            success_score += (6 - budget) * 2;
         }
         
         // Negative modifiers
-        success_score -= Math.floor(Q.hindenburg_angry_bruning / 4);
-        success_score -= (Q.dnvp_burgerblock_dissent * 125);
+        if (hindenburg_angry_bruning) {
+            success_score -= Math.floor(hindenburg_angry_bruning / 4);
+        }
+        if (dnvp_burgerblock_dissent) {
+            success_score -= Math.floor(dnvp_burgerblock_dissent * 125);
+        }
     }
     
     // Determine outcome
-    Q.osthilfe_cut_succeeds = (success_score >= 50) ? 1 : 0;
-    Q.osthilfe_cut_fails = (success_score < 50) ? 1 : 0;
+    osthilfe_cut_succeeds = (success_score >= 50) ? 1 : 0;
 !}
+
+= The Battle for Osthilfe
 
 The simmering conflict within the <span style="color: #4A5C2A;">Bürgerblock</span> has finally erupted. Chancellor Brüning, pressured by the industrialists in the <span style="color: #C0A054;">DVP</span> and his own pragmatic wing of the <span style="color: #000000;">Center</span>, is attempting to slash the *Osthilfe* subsidies for the eastern estates. It is a direct assault on the powerful Junker class and a move that has enraged President von Hindenburg.
 
@@ -49,100 +62,90 @@ The moderate <span style="color: #3E88B3;">DNVP</span> leadership within the gov
 - @stay_silent: Remain silent. Let them tear each other apart.
 
 @condemn_all
-on-arrival: player_choice_osthilfe = "condemn"
-go-to: outcome_success if osthilfe_cut_succeeds == 1; outcome_failure
+title: We condemn this charade
 
-@tolerate_bruning
-on-arrival: player_choice_osthilfe = "tolerate"
-go-to: outcome_success if osthilfe_cut_succeeds == 1; outcome_failure
+We will not be silent while the bourgeoisie squabbles over their ill-gotten gains! The SPD condemns both the parasitic Junker estates and the greedy industrialists who seek to profit from their misery.
+
+- @outcome
+
+@tolerate_bruning  
+title: Strategic tolerance
+
+Perhaps it is better to quietly support Brüning's efforts against the reactionary Junkers. A weakened agrarian lobby could serve our interests in the long run.
+
+- @outcome
 
 @stay_silent
-on-arrival: player_choice_osthilfe = "silent"
-go-to: outcome_success if osthilfe_cut_succeeds == 1; outcome_failure
+title: Let them destroy each other
 
-@outcome_success
+Why should we intervene in this bourgeois civil war? Let the capitalists tear each other apart while we prepare for the inevitable collapse.
+
+- @outcome
+
+@outcome
 on-arrival: {!
-    // Core political consequences
-    Q.osthilfe_cut = 1;
-    Q.hindenburg_angry_bruning += 25;
-    Q.bruning_support += 2;
-    
-    // Extra anger if SPD condemned
-    if (Q.player_choice_osthilfe == "condemn") {
-        Q.hindenburg_angry_bruning += 5;
-    }
-    
-    // Rural voter shifts
-    Q.rural_dnvp -= 4;
-    Q.rural_z -= 2;
-    Q.rural_nsdap += 5;
-    
-    if (Q.dnf_formed == 1) {
-        Q.rural_dnf += 2;
+    if (osthilfe_cut_succeeds == 1) {
+        // Core political consequences - SUCCESS
+        osthilfe_cut = 1;
+        hindenburg_angry_bruning += 25;
+        bruning_support += 2;
+        
+        // Rural voter shifts
+        rural_dnvp -= 4;
+        rural_z -= 2;
+        rural_nsdap += 5;
+        
+        if (dnf_formed == 1) {
+            rural_dnf += 2;
+        } else {
+            rural_nsdap += 1;
+        }
+        
+        // Coalition dissent adjustments
+        dvp_burgerblock_dissent -= 0.1;
+        dnvp_burgerblock_dissent += 0.2;
+        total_burgerblock_dissent -= 0.4;
+        
+        // Handle DNVP defections based on leader
+        if (dnvp_leader == "Treviranus") {
+            var total_defections = Math.floor(dnvp_burgerblock_dissent * 25);
+            if (total_defections > 0) {
+                dnvp_r -= total_defections;
+                var nsdap_gain = Math.ceil(total_defections / 2);
+                var dnf_gain = Math.floor(total_defections / 2);
+                
+                nsdap_r += nsdap_gain;
+                dnf_r += dnf_gain;
+            }
+        } else if (dnvp_leader == "Lambach") {
+            if (dnvp_burgerblock_dissent > 0.30 && dnvp_worker_support < 25) {
+                dnvp_r -= 5;
+                nsdap_r += 3;
+                dnf_r += 2;
+            }
+        }
     } else {
-        Q.rural_nsdap += 1;
-    }
-    
-    // Coalition dissent adjustments
-    Q.dvp_burgerblock_dissent -= 0.1;
-    Q.dnvp_burgerblock_dissent += 0.2;
-    Q.total_burgerblock_dissent -= 0.4;
-    
-    // Handle DNVP defections based on leader
-    if (Q.dnvp_leader == "Treviranus") {
-        let total_defections = Math.floor(Q.dnvp_burgerblock_dissent * 25);
-        if (total_defections > 0) {
-            Q.dnvp_r -= total_defections;
-            let nsdap_gain = Math.ceil(total_defections / 2);
-            let dnf_gain = Math.floor(total_defections / 2);
-            
-            // Initialize if needed
-            if (!Q.nsdap_r) Q.nsdap_r = 0;
-            if (!Q.dnf_r) Q.dnf_r = 0;
-            
-            Q.nsdap_r += nsdap_gain;
-            Q.dnf_r += dnf_gain;
-        }
-    } else if (Q.dnvp_leader == "Lambach") {
-        if (Q.dnvp_burgerblock_dissent > 0.30 && Q.dnvp_worker_support < 25) {
-            Q.dnvp_r -= 5;
-            
-            // Initialize if needed
-            if (!Q.nsdap_r) Q.nsdap_r = 0;
-            if (!Q.dnf_r) Q.dnf_r = 0;
-            
-            Q.nsdap_r += 3;
-            Q.dnf_r += 2;
-        }
+        // Political consequences of failure - FAILURE
+        hindenburg_angry_bruning -= 5;
+        bruning_support -= 3;
+        bruning_coalition_loss += 2;
+        
+        // Voter shifts
+        new_middle_dvp -= 1;
+        old_middle_z -= 1;
+        new_middle_spd += 1;
+        old_middle_spd += 1;
+        
+        // Coalition dissent
+        dvp_burgerblock_dissent += 0.15;
+        z_burgerblock_dissent += 0.1;
     }
 !}
 
-The government manages to force the cuts through. It is a stunning display of political force that solidifies the <span style="color: #4A5C2A;">Bürgerblock</span>'s liberal wing, but the victory is costly. Rural voters, feeling abandoned, are fleeing to the <span style="color: #7A3C00;">Nazis</span>, and President von Hindenburg sees this as an unforgivable personal insult.
+[? if osthilfe_cut_succeeds == 1: The government manages to force the cuts through. It is a stunning display of political force that solidifies the <span style="color: #4A5C2A;">Bürgerblock</span>'s liberal wing, but the victory is costly. Rural voters, feeling abandoned, are fleeing to the <span style="color: #7A3C00;">Nazis</span>, and President von Hindenburg sees this as an unforgivable personal insult. ?]
 
-- @end: The government has won, for now.
+[? if osthilfe_cut_succeeds != 1: Faced with open revolt from the <span style="color: #3E88B3;">DNVP</span>'s agrarian wing and the looming threat of a presidential veto, the government buckles. The *Osthilfe* cuts are withdrawn in a humiliating public reversal. The <span style="color: #4A5C2A;">Bürgerblock</span> appears weak and divided, its authority shattered. The Chancellor's position seems more precarious than ever.
 
-@outcome_failure
-on-arrival: {!
-    // Political consequences of failure
-    Q.hindenburg_angry_bruning -= 5;
-    Q.bruning_support -= 3;
-    Q.bruning_coalition_loss += 2;
-    
-    // Voter shifts
-    Q.new_middle_dvp -= 1;
-    Q.old_middle_z -= 1;
-    Q.new_middle_spd += 1;
-    Q.old_middle_spd += 1;
-    
-    // Coalition dissent
-    Q.dvp_burgerblock_dissent += 0.15;
-    Q.z_burgerblock_dissent += 0.1;
-!}
+Nice having you, Brüning. ?]
 
-Faced with open revolt from the <span style="color: #3E88B3;">DNVP</span>'s agrarian wing and the looming threat of a presidential veto, the government buckles. The *Osthilfe* cuts are withdrawn in a humiliating public reversal. The <span style="color: #4A5C2A;">Bürgerblock</span> appears weak and divided, its authority shattered. The Chancellor's position seems more precarious than ever.
-
-- @end: Nice having you, Brüning.
-
-@end
-
-Good riddance.
+[? if osthilfe_cut_succeeds == 1: The political ramifications will be felt for months to come. ?]
