@@ -1,0 +1,98 @@
+title: The Bourgeois Fortress
+new-page: true
+is-card: true
+card-image: img/portraits/BrüningHeinrich.jpg
+view-if: dealing_with_toleration_timer = 0 and spd_toleration and chancellor_party == "Z" and burgerblock_formed
+on-arrival: dealing_with_toleration_timer += 6; month_actions += 1
+tags: govt_affairs
+
+= The Bourgeois Fortress
+
+We are currently providing external support to the <span style="color: #4A5C2A;">**Bürgerblock**</span> government of Chancellor [+ chancellor +]. This unprecedented coalition of bourgeois parties - the [? if z_party_name != "CVP": <span style="color: #000000;">**Center**</span>?][? if z_party_name == "CVP": <span style="color: #000000;">**CVP**</span>?], [? if not kvp_formed and dnvp_ideology == "Moderate": <span style="color: #3E88B3;">**DNVP**</span>?][? if kvp_formed: <span style="color: #0087DC;">**KVP**</span>?], [? if not lvp_formed and dvp_exist: <span style="color: #C0A054;">**DVP**</span>?][? if lvp_formed: <span style="color: #FFCC00;">**LVP**</span>?], and <span style="color: #DDAA00;">**DDP**</span> - represents a fortress against both the extremes of left and right. But how should we navigate this delicate position?
+
+- @break_toleration
+- @urge_against_austerity_burgerblock
+- @improve_relations_burgerblock
+- @exploit_divisions: Exploit divisions within the Bürgerblock coalition.
+- @stay_course: Stay the course, for stability's sake.
+- @easy_discard
+
+@break_toleration
+view-if: not constructive_vonc
+title: End the toleration agreement with a vote of no confidence!
+
+Are we sure about this? A vote of no confidence would shatter the bourgeois coalition and trigger new elections, potentially leading to massive gains for the <span style="color: #7A3C00;">Nazis</span> and <span style="color: #9B0000;">Communists</span>. [? if in_weimar_coalition_prussia or in_grand_coalition_prussia or in_popular_front_prussia: The <span style="color: #4A5C2A;">Bürgerblock parties</span> also threaten retaliatory action against us in Prussia, pressuring us to maintain stability.?]
+
+- @vonc: Yes, bring down this bourgeois fortress!
+- @stay_course: No, we should maintain stability.
+
+@vonc
+on-arrival: spd_in_government = 0; spd_toleration = 0; spd_toleration_right = 0; in_grand_coalition = 0; burgerblock_formed = 0; chancellor = "Brüning"; chancellor_party = "Z"; next_election_time = time + 3 if next_election_time > time+3; next_election_month = month + 3 if next_election_time >= time+3; next_election_year = year if next_election_time >= time+3; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12; left_strength += 10; pro_republic -= 8; new_middle_spd -= 4; rural_spd -= 4; old_middle_spd -= 4; catholics_spd -= 4; reformist_dissent += 8; left_dissent -= 8; dvp_relation -= 6; z_relation -= 6; ddp_relation -= 6; lvp_relation -= 6; dnvp_relation -= 6; kvp_relation -= 6; ddp_right += 2; dvp_right += 3; total_burgerblock_dissent += 0.3
+go-to: new_prussia_election if in_social_catholic_coalition_prussia or in_weimar_coalition_prussia or in_grand_coalition_prussia or in_popular_front_prussia and ((center_right_coalition_prussia < 50 and dnvp_ideology == "Moderate") or dnvp_ideology == "Radical"); center_right_coalition_prussia if in_social_catholic_coalition_prussia or in_weimar_coalition_prussia or in_grand_coalition_prussia or in_popular_front_prussia and center_right_coalition_prussia >= 50 and dnvp_ideology == "Moderate"
+
+We have called for a vote of no confidence, shattering the <span style="color: #4A5C2A;">Bürgerblock</span> coalition! The bourgeois parties are in disarray as Chancellor [+ chancellor +] now rules only as acting chancellor.
+
+New elections have been set for [+ next_election_month : month +] [+ next_election_year +].
+
+@new_prussia_election
+on-arrival: z_relation -= 6; ddp_relation -= 6; lvp_relation -= 6; dvp_relation -= 6; dnvp_relation -= 6; kvp_relation -= 6; kpd_relation += 8; dvp_right += 4; ddp_right += 3; lvp_right += 3; pro_republic -= 5; new_middle_spd -= 3; rural_spd -= 3; old_middle_spd -= 3; catholics_spd -= 3; new_middle_nsdap += 3; old_middle_nsdap += 3; rural_nsdap += 3; catholics_nsdap += 3; in_right_coalition_prussia = 0; in_social_catholic_coalition_prussia = 0; in_weimar_coalition_prussia = 0; in_grand_coalition_prussia = 0; in_minority_grand_coalition_prussia = 0; in_popular_front_prussia = 0; in_left_front_prussia = 0; in_spd_majority_prussia = 0; in_center_right_coalition_prussia = 0; in_far_right_coalition_prussia = 0; in_minority_weimar_coalition_prussia = 0; spd_prussia = 0; right_prussia = 0; ddp_in_popular_front_prussia = 0; kpd_goals_seen_prussia = 0; spd_toleration_prussia = 0; prussia_coalition_trigger = 0
+call: set_next_election_time_prussia
+
+The <span style="color: #4A5C2A;">Bürgerblock parties</span> have united in retaliatory fury, calling a vote of no confidence in Prussia and forcing the dissolution of the Landtag for new elections.
+
+New Prussian elections have been set for [+ next_election_month_prussia : month +] [+ next_election_year_prussia +].
+
+The collapse of both the Reich and Prussian governments has created a constitutional crisis, with extremist parties on both sides exploiting the chaos to claim that parliamentary democracy has failed Germany.
+
+@center_right_coalition_prussia
+on-arrival: in_center_right_coalition_prussia = 1; in_right_coalition_prussia = 0; in_weimar_coalition_prussia = 0; in_grand_coalition_prussia = 0; in_minority_grand_coalition_prussia = 0; in_popular_front_prussia = 0; in_left_front_prussia = 0; in_spd_majority_prussia = 0; in_far_right_coalition_prussia = 0; in_minority_weimar_coalition_prussia = 0; spd_prussia = 0; right_prussia = 0; ddp_in_popular_front_prussia = 0; kpd_goals_seen_prussia = 0; spd_toleration_prussia = 0; prussia_coalition_trigger = 0; prussia_leader = "Stegerwald"; prussia_leader = "Brüning" if z_leader == "Stegerwald"; new_middle_spd -= 4; z_relation -= 6; ddp_relation -= 6; lvp_relation -= 6; dvp_relation -= 6; dnvp_relation -= 6; kvp_relation -= 6; dvp_right += 4; ddp_right += 3; pro_republic -= 5; prussian_police_loyalty -= 0.08; prussian_police_strength -= 10
+
+The <span style="color: #4A5C2A;">Bürgerblock parties</span> have united in retaliation, calling a no confidence vote in Prussia and replacing our government with their own center-right coalition. This represents a significant shift rightward in Prussian politics, though it could have been worse with new elections.
+
+[? if z_leader != "Stegerwald": Adam Stegerwald?][? if z_leader == "Stegerwald": Heinrich Brüning?] of the [? if z_party_name != "CVP": <span style="color: #000000;">Center Party</span>?][? if z_party_name == "CVP": <span style="color: #000000;">**CVP**</span>?] is selected to be the Minister-President of Prussia.
+
+@urge_against_austerity_burgerblock
+title: Push for increased welfare spending and reversal of austerity measures.
+subtitle: This will test the unity of the <span style="color: #4A5C2A;">Bürgerblock</span> and exploit tensions between its liberal and conservative wings.
+go-to: urge_success_burgerblock if z_relation >= 35 and total_burgerblock_dissent < 0.4; urge_failure_burgerblock if z_relation < 35 or total_burgerblock_dissent >= 0.4
+
+@urge_success_burgerblock
+on-arrival: bruning_austerity_limited += 1; workers_spd += 5*(1-dissent); unemployed_spd += 5*(1-dissent); new_middle_spd += 4*(1-dissent) if bruning_austerity_limited >= 3; new_middle_ddp += 3; old_middle_ddp += 3; new_middle_dvp += 3; old_middle_dvp += 3; new_middle_nsdap -= 3; old_middle_nsdap -= 3; new_middle_lvp += 3; old_middle_lvp += 3; z_relation -= 4; reformist_dissent -= 6; center_dissent -= 4; labor_dissent -= 6; dvp_right += 2; ddp_right += 1; lvp_right += 2; dnvp_burgerblock_dissent += 0.1; kvp_burgerblock_dissent += 0.05; total_burgerblock_dissent += 0.15; hindenburg_angry_bruning += 15; economic_growth += 0.3; unemployed -= 0.3
+
+The motion passes, but not without significant strain on the <span style="color: #4A5C2A;">Bürgerblock</span> coalition! The liberal parties have managed to override conservative resistance, but this has created visible cracks in the bourgeois fortress. The [? if not kvp_formed and dnvp_ideology == "Moderate": <span style="color: #3E88B3;">DNVP</span>?][? if kvp_formed: <span style="color: #0087DC;">KVP</span>?] agrarian wing is particularly displeased with this leftward shift.
+
+[? if bruning_austerity_limited == 1: We have successfully prevented Brüning from implementing planned tax cuts for high earners, maintaining progressive taxation. ?][? if bruning_austerity_limited == 2: We have successfully pressured the Bürgerblock into restoring the 40-hour workweek, though wage improvements remain limited. ?][? if bruning_austerity_limited >= 3: We have successfully forced the reversal of some civil service salary cuts, improving conditions for government workers. ?]
+
+@urge_failure_burgerblock  
+on-arrival: dvp_relation -= 4; ddp_relation -= 4; lvp_relation -= 4; z_relation -= 4; dnvp_relation -= 4; kvp_relation -= 4; dvp_burgerblock_dissent -= 0.05; dnvp_burgerblock_dissent -= 0.05; kvp_burgerblock_dissent -= 0.05; total_burgerblock_dissent -= 0.15; workers_z -= 3; workers_spd += 3; unemployed_z -= 3; unemployed_spd += 3
+
+The <span style="color: #4A5C2A;">Bürgerblock</span> has maintained its discipline and voted down our proposal. Ironically, this defeat has strengthened coalition unity by giving them a common enemy to oppose. However, the working-class base of the [? if z_party_name != "CVP": <span style="color: #000000;">Center</span>?][? if z_party_name == "CVP": <span style="color: #000000;">CVP</span>?] watches with growing discontent as their party leadership aligns with capitalist interests.
+
+@improve_relations_burgerblock
+title: Improve relations with the Bürgerblock parties.
+on-arrival: z_relation += 5*(1-dissent); dvp_relation += 4*(1-dissent); ddp_relation += 4*(1-dissent); lvp_relation += 4*(1-dissent); dnvp_relation += 3*(1-dissent); kvp_relation += 4*(1-dissent); left_dissent += 8; center_dissent += 3; dvp_left += 1; ddp_left += 1; ddp_cohesion -= 0.8; lvp_left += 1; total_burgerblock_dissent -= 0.1; hindenburg_angry_bruning -= 5
+
+We have expanded our diplomatic channels with all parties in the <span style="color: #4A5C2A;">Bürgerblock</span> coalition, fostering better cooperation between Social Democracy and the bourgeois center. Our outreach has been particularly successful with the liberal [? if not lvp_formed and dvp_exist: <span style="color: #C0A054;">DVP</span>?][? if lvp_formed: <span style="color: #FFCC00;">LVP</span>?] and <span style="color: #DDAA00;">DDP</span>, and has even helped stabilize the coalition by reducing internal tensions.
+
+However, our leftist comrades view this bourgeois collaboration with deep suspicion, questioning whether we are abandoning our socialist principles.
+
+@exploit_divisions
+title: Exploit divisions within the Bürgerblock coalition.
+subtitle: Play the liberal and conservative wings against each other.
+go-to: exploit_success if total_burgerblock_dissent >= 0.3; exploit_failure if total_burgerblock_dissent < 0.3
+
+@exploit_success
+on-arrival: total_burgerblock_dissent += 0.2; dvp_burgerblock_dissent += 0.1; dnvp_burgerblock_dissent += 0.15; kvp_burgerblock_dissent += 0.1; bruning_coalition_loss += 3; left_dissent -= 3; center_dissent += 2; new_middle_spd += 2*(1-dissent); old_middle_spd += 2*(1-dissent); dvp_relation -= 3; dnvp_relation -= 3; kvp_relation -= 3; z_relation -= 2
+
+We have successfully driven wedges between the liberal and conservative wings of the <span style="color: #4A5C2A;">Bürgerblock</span>! By publicly highlighting their contradictions on economic policy and social issues, we have weakened their coalition cohesion. The [? if not kvp_formed and dnvp_ideology == "Moderate": <span style="color: #3E88B3;">DNVP</span>?][? if kvp_formed: <span style="color: #0087DC;">KVP</span>?] conservatives increasingly clash with the [? if not lvp_formed and dvp_exist: <span style="color: #C0A054;">DVP</span>?][? if lvp_formed: <span style="color: #FFCC00;">LVP</span>?] liberals over fundamental questions of economic policy.
+
+Our leftist comrades approve of this more confrontational approach to the bourgeois parties.
+
+@exploit_failure
+on-arrival: total_burgerblock_dissent -= 0.1; dvp_relation -= 2; ddp_relation -= 2; lvp_relation -= 2; z_relation -= 2; dnvp_relation -= 2; kvp_relation -= 2; bruning_support += 1
+
+Our attempts to exploit divisions within the <span style="color: #4A5C2A;">Bürgerblock</span> have backfired. Instead of creating splits, our obvious maneuvering has actually strengthened their unity against us. The coalition parties have closed ranks, viewing our tactics as proof that Social Democracy cannot be trusted as a constructive partner.
+
+@stay_course
+
+We will continue to provide stable support to the <span style="color: #4A5C2A;">Bürgerblock</span> government, maintaining the delicate balance that keeps both extremes at bay.
