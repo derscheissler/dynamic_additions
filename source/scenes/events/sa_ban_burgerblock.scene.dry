@@ -5,7 +5,6 @@ priority: 4
 tags: event
 new-page: true
 max-visits: 1
-!}
 on-display: {!
     var cardEl = document.createElement('div');
     cardEl.className = "face-figure2";
@@ -51,17 +50,17 @@ With the presidential elections approaching, Prussian Minister of the Interior C
 on-arrival: {!
     Q.nazi_urgency += 1;
     Q.sa_ban_attempted_burgerblock = 1;
-    let success_score = 30;
-    if (Q.interior_police_loyalty) { success_score += Q.interior_police_loyalty * 15; }
-    if (Q.prussian_police_loyalty) { success_score += Q.prussian_police_loyalty * 10; }
-    if (Q.hindenburg_angry_bruning) { success_score -= Math.floor(Q.hindenburg_angry_bruning / 3); } else { success_score += 10; }
-    if (Q.dvp_burgerblock_dissent) { success_score -= Q.dvp_burgerblock_dissent * 40; }
-    if (Q.dnvp_burgerblock_dissent) { success_score -= Q.dnvp_burgerblock_dissent * 50; }
-    if (Q.stegerwald_prussia) { success_score += 15; }
-    if (Q.judiciary_reformed) { success_score += 12; }
-    if (Q.interior_minister == "Wirth") { success_score += 20; }
+    success_score = 30;
+    success_score += Q.interior_police_loyalty * 15;
+    success_score += Q.prussian_police_loyalty * 10; 
+    success_score -= Math.floor(Q.hindenburg_angry_bruning / 3) else success_score += 10;
+    success_score -= Q.dvp_burgerblock_dissent * 40;
+    success_score -= Q.dnvp_burgerblock_dissent * 50;
+    if not spd_prussia success_score += 15;
+    if judiciary_reformed success_score += 12;
+    if interior_minister == "Wirth" success_score += 20;
     if (Q.interior_minister_party == "Z" || Q.interior_minister_party == "CVP") { success_score += 10; }
-    Q.sa_ban_burgerblock_succeeds = (success_score >= 60)
+    success_score >== 60 = sa_ban_burgerblock_succeeds
     Q.sa_ban_partial = (success_score >= 45 && success_score < 60)
     Q.sa_ban_burgerblock_fails = (success_score < 45)
 }
