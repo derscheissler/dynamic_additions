@@ -32,6 +32,7 @@ on-display: {!
     var contentDiv = document.querySelector("#page #mid_panel #content");
     contentDiv.appendChild(cardEl);
 !}
+
 = <span style="color: #7A3C00;">**SA**</span> Planned Coup Discovered!
 With the presidential elections approaching, Prussian Minister of the Interior Carl Severing has ordered emergency searches of all <span style="color: #7A3C00;">Nazi</span> and <span style="color: #7A3C00;">**SA**</span> offices throughout Prussia. During the raids, damning evidence was uncovered: the <span style="color: #7A3C00;">Nazi</span> Party headquarters in Munich had ordered <span style="color: #7A3C00;">**SA**</span> units to be placed on high alert for election day. In the event of a Hindenburg victory, these units were prepared to launch a coup d'état, including the planned seizure of military installations and weaponry. The revelation has sent shockwaves through the <span style="color: #4A5C2A;">Bürgerblock</span> coalition.
 [? if interior_minister == "Wirth": Interior Minister Joseph Wirth of the <span style="color: #000000;">Center Party</span> is pushing hard for immediate action?]
