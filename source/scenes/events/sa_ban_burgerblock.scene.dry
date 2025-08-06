@@ -5,22 +5,6 @@ priority: 4
 tags: event
 new-page: true
 max-visits: 1
-on-arrival: {!
-    Q.nazi_urgency += 1;
-    Q.sa_ban_attempted_burgerblock = 1;
-    let success_score = 30;
-    if (Q.interior_police_loyalty) { success_score += Q.interior_police_loyalty * 15; }
-    if (Q.prussian_police_loyalty) { success_score += Q.prussian_police_loyalty * 10; }
-    if (Q.hindenburg_angry_bruning) { success_score -= Math.floor(Q.hindenburg_angry_bruning / 3); } else { success_score += 10; }
-    if (Q.dvp_burgerblock_dissent) { success_score -= Q.dvp_burgerblock_dissent * 40; }
-    if (Q.dnvp_burgerblock_dissent) { success_score -= Q.dnvp_burgerblock_dissent * 50; }
-    if (Q.stegerwald_prussia) { success_score += 15; }
-    if (Q.judiciary_reformed) { success_score += 12; }
-    if (Q.interior_minister == "Wirth") { success_score += 20; }
-    if (Q.interior_minister_party == "Z" || Q.interior_minister_party == "CVP") { success_score += 10; }
-    Q.sa_ban_burgerblock_succeeds = (success_score >= 60) ? 1 : 0;
-    Q.sa_ban_partial = (success_score >= 45 && success_score < 60) ? 1 : 0;
-    Q.sa_ban_burgerblock_fails = (success_score < 45) ? 1 : 0;
 !}
 on-display: {!
     var cardEl = document.createElement('div');
@@ -34,9 +18,9 @@ on-display: {!
 !}
 
 = <span style="color: #7A3C00;">**SA**</span> Planned Coup Discovered!
-With the presidential elections approaching, Prussian Minister of the Interior Carl Severing has ordered emergency searches of all <span style="color: #7A3C00;">Nazi</span> and <span style="color: #7A3C00;">**SA**</span> offices throughout Prussia. During the raids, damning evidence was uncovered: the <span style="color: #7A3C00;">Nazi</span> Party headquarters in Munich had ordered <span style="color: #7A3C00;">**SA**</span> units to be placed on high alert for election day. In the event of a Hindenburg victory, these units were prepared to launch a coup d'état, including the planned seizure of military installations and weaponry. The revelation has sent shockwaves through the <span style="color: #4A5C2A;">Bürgerblock</span> coalition.
-[? if interior_minister == "Wirth": Interior Minister Joseph Wirth of the <span style="color: #000000;">Center Party</span> is pushing hard for immediate action?]
-[? if interior_minister_party != "Wirth": The Interior Minister seems hesitant, worried about Conservative backlash. ?]
+
+With the presidential elections approaching, Prussian Minister of the Interior Carl Severing has ordered emergency searches of all <span style="color: #7A3C00;">Nazi</span> and <span style="color: #7A3C00;">**SA**</span> offices throughout Prussia. During the raids, damning evidence was uncovered: the <span style="color: #7A3C00;">Nazi</span> Party headquarters in Munich had ordered <span style="color: #7A3C00;">**SA**</span> units to be placed on high alert for election day. In the event of a Hindenburg victory, these units were prepared to launch a coup d'état, including the planned seizure of military installations and weaponry. The revelation has sent shockwaves through the <span style="color: #4A5C2A;">Bürgerblock</span> coalition. [? if interior_minister == "Wirth": Interior Minister Joseph Wirth of the <span style="color: #000000;">Center Party</span> is pushing for immediate action?] [? if interior_minister == "Groener": The Interior Minister Wilhelm Groener seems hesitant, worried about Conservative backlash. ?]
+
 - @push_federal_ban: Use our government position to push for a nationwide <span style="color: #7A3C00;">**SA**</span> ban!
 - @coalition_consensus: Seek coalition consensus before acting on the <span style="color: #7A3C00;">**SA**</span> threat.
 - @prussian_only: Limit action to Prussia to avoid splitting the <span style="color: #4A5C2A;">Bürgerblock</span>.
@@ -59,13 +43,29 @@ With the presidential elections approaching, Prussian Minister of the Interior C
         Q.dnvp_burgerblock_dissent += 0.1;
         Q.left_dissent -= 5;
     !}
+
     We limit our response to Prussia alone, maintaining the existing <span style="color: #7A3C00;">**SA**</span> ban there while avoiding a direct confrontation within the <span style="color: #4A5C2A;">Bürgerblock</span>. This cautious approach preserves coalition unity but allows the <span style="color: #7A3C00;">**SA**</span> to continue operating freely in other states. The Conservative partners seem relieved, but the <span style="color: #c00000;">**SPD**</span> and parts of our own membership are frustrated by what they see as insufficient action against the Nazi threat.
-    - @end
+    
 
 @_resolve_ban_outcome
-    - [? if Q.sa_ban_burgerblock_succeeds == 1 ?] go-to: @outcome_success
-    - [? if Q.sa_ban_partial == 1 ?] go-to: @outcome_partial
-    - [? if Q.sa_ban_burgerblock_fails == 1 ?] go-to: @outcome_failure
+on-arrival: {!
+    Q.nazi_urgency += 1;
+    Q.sa_ban_attempted_burgerblock = 1;
+    let success_score = 30;
+    if (Q.interior_police_loyalty) { success_score += Q.interior_police_loyalty * 15; }
+    if (Q.prussian_police_loyalty) { success_score += Q.prussian_police_loyalty * 10; }
+    if (Q.hindenburg_angry_bruning) { success_score -= Math.floor(Q.hindenburg_angry_bruning / 3); } else { success_score += 10; }
+    if (Q.dvp_burgerblock_dissent) { success_score -= Q.dvp_burgerblock_dissent * 40; }
+    if (Q.dnvp_burgerblock_dissent) { success_score -= Q.dnvp_burgerblock_dissent * 50; }
+    if (Q.stegerwald_prussia) { success_score += 15; }
+    if (Q.judiciary_reformed) { success_score += 12; }
+    if (Q.interior_minister == "Wirth") { success_score += 20; }
+    if (Q.interior_minister_party == "Z" || Q.interior_minister_party == "CVP") { success_score += 10; }
+    Q.sa_ban_burgerblock_succeeds = (success_score >= 60)
+    Q.sa_ban_partial = (success_score >= 45 && success_score < 60)
+    Q.sa_ban_burgerblock_fails = (success_score < 45)
+}
+go-to: outcome_success if sa_ban_burgerblock_succeeds; outcome_partial if sa_ban_partial; outcome_failure if sa_ban_burgerblock_fails
 
 @outcome_success
     on-arrival: {!
@@ -74,8 +74,8 @@ With the presidential elections approaching, Prussian Minister of the Interior C
         Q.nazi_urgency += 10;
         Q.hindenburg_angry_bruning += 30;
     !}
-    Success! Despite grumbling from our conservative partners and outright fury from Hindenburg, the federal ban on the <span style="color: #7A3C00;">**SA**</span> is pushed through. The paramilitary organization is officially dissolved, its assets seized, and its members forbidden from marching. While this is a major blow to the Nazis, the <span style="color: #7A3C00;">**SA**</span> simply goes underground, forming "sports clubs" and "hiking groups" to continue their activities. The political cost is high, but the republic has demonstrated its will to fight.
-    - @end
+
+    Success! Despite grumbling from conservatives and outright fury from Hindenburg, the federal ban on the <span style="color: #7A3C00;">**SA**</span> is pushed through. The paramilitary organization is officially dissolved, its assets seized, and its members forbidden from marching. While this is a major blow to the Nazis, the <span style="color: #7A3C00;">**SA**</span> simply goes underground, forming "sports clubs" and "hiking groups" to continue their activities. The political cost is high, but the republic has demonstrated its will to fight.
 
 @outcome_partial
     on-arrival: {!
@@ -86,8 +86,9 @@ With the presidential elections approaching, Prussian Minister of the Interior C
         Q.dvp_burgerblock_dissent += 0.1;
         Q.dnvp_burgerblock_dissent += 0.15;
     !}
+
     A partial victory. The ban is enacted, but with significant concessions to the conservatives. The <span style="color: #7A3C00;">**SA**</span> is officially banned, but enforcement is weak and key loopholes are left open, allowing them to continue many of their activities under new guises. The <span style="color: #4A5C2A;">Bürgerblock</span> is strained by the argument, and Hindenburg's trust in our government is further eroded.
-    - @end
+    
 
 @outcome_failure
     on-arrival: {!
@@ -96,5 +97,6 @@ With the presidential elections approaching, Prussian Minister of the Interior C
         Q.burgerblock_stability -= 15;
         Q.nazi_urgency += 3;
     !}
+
     Failure. Under intense pressure from President Hindenburg and the right-wing of the <span style="color: #4A5C2A;">Bürgerblock</span>, the proposed ban on the <span style="color: #7A3C00;">**SA**</span> collapses. It is a humiliating defeat for the government and a major propaganda victory for the Nazis, who openly mock the state's weakness. Our coalition is deeply fractured by the attempt.
-    - @end
+    
