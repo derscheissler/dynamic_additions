@@ -52,7 +52,7 @@ The discovery has thrown the <span style="color: #4A5C2A;">Bürgerblock</span> i
     The <span style="color: #4A5C2A;">Bürgerblock</span> chooses the path of least resistance - maintaining Prussia's existing <span style="color: #7A3C00;">**SA**</span> restrictions while avoiding federal action that might shatter the coalition. Conservative partners breathe sighs of relief, but this half-measure allows brown-shirted paramilitaries to continue drilling and marching across most of Germany.
     
 
-@_resolve_ban_outcome
+@resolve_ban_outcome
 on-arrival: {!
     Q.nazi_urgency = (Q.nazi_urgency || 0) + 1;
     Q.sa_ban_attempted_burgerblock = 1;
