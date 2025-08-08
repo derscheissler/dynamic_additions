@@ -1,0 +1,77 @@
+title: The <span style="color: #4A5C2A;">Bürgerblock</span> Collapses
+tags: event
+priority: 1
+view-if: burgerblock_failed == 1
+max-visits: 1
+
+= The End of Unity
+
+The frantic telegrams and all-night negotiations have failed. The alliance of the <span style="color: #000000;">bourgeoisie</span>, hailed just months ago as the savior of the <span style="color: #000000;">Rep</span><span style="color: #DD0000;">ubl</span><span style="color: #FFCC00;">ic</span>, has shattered under the weight of its own contradictions. The political center cannot hold.
+
+[? if Q.dnvp_burgerblock_dissent > 0.30: For the nationalists of the <span style="color: #3E88B3;">DNVP</span>, participation was always a bitter pill. Their leadership finally buckled to pressure from their monarchist base, who viewed the coalition as a betrayal of every conservative principle. ?]
+[? if Q.dvp_burgerblock_dissent > 0.30: The industrialists of the <span style="color: #C0A054;">DVP</span> were the first to walk, citing the government's endless concessions to the unions and its refusal to enact necessary austerity. ?]
+[? if Q.z_burgerblock_dissent > 0.30: Even within the pragmatic <span style="color: #000000;">Center Party</span>, the pressure became too great. Its powerful trade union wing declared the bloc's harsh economic policies a betrayal of Catholic social teaching. ?]
+[? if Q.ddp_burgerblock_dissent > 0.30: The staunch republicans of the <span style="color: #D3C24D;">DDP</span> could no longer stomach the influence of the bloc's nationalist wing, decrying the constant compromises on civil liberties. ?]
+
+-@burgerblock_dead: We will watch as the bourgeoisie tears itself apart.
+
+@burgerblock_dead
+on-arrival: {!
+    if (Q.sa_ban_burgerblock_succeeds == 1 and Q.kpd_infighting == 1 and Q.nazi_peak_triggered == 1 and Q.reparations_resolved == 1 and Q.osthilfe_cut == 1 and Q.emergency.cuts.seen == 1) {
+        Q.spd_won = true;
+        Q.spd_workers += 10;
+        Q.pro_republic += 5;
+        Q.unemployed_nsdap -= 5;
+        Q.workers_kpd -= 3;
+        Q.old_middle_nsdap -= 10;
+        Q.old_middle_dvp += 5;
+        Q.old_middle_dnvp += 5;
+        Q.new_middle_nsdap -= 20;
+        Q.new_middle_dvp += 15;
+        Q.new_middle_dnvp += 5;
+    } else {
+        Q.nsdap_unemployed += 4;
+        Q.kpd_workers += 3;
+        Q.pro_republic -= 5;
+        Q.bruning_coalition_loss += 5;
+        Q.hindenburg_angry_bruning += 4;
+
+        if (Q.sa_wirth_ban == 1) {
+            Q.new_middle_nsdap  -= 2;
+            Q.workers_spd += 3;
+        }
+        if (Q.kpd_infighting == 1) {
+            Q.workers_spd += 5;
+            Q.workers_kpd  -= 3;
+        }
+        if (Q.nazi_peak_triggered == 1) {
+            Q.rural_nsdap -= 3;
+            Q.rural_dnvp += 5;
+        }
+        if (Q.reparations_resolved == 1) {
+            Q.unemployed_nsdap -= 10;
+            Q.unemployed_spd += 2;
+            Q.pro_republic += 5;
+            Q.unemployed_z  += 4;
+        }
+        if (Q.osthilfe_cut == 1) {
+            Q.rural_nsdap += 5;
+            Q.rural_dnvp += 5;
+            Q.rural_z -= 10;
+        }
+        if (Q.emergency_decree_seen == 1) {
+            Q.new_middle_z -= 3;
+            Q.workers_z -= 5;
+            Q.workers_spd += 4;
+            Q.workers_kpd += 6;
+        }
+        if (Q.emergency.cuts.seen == 1) {
+            Q.unemployed_z  -= 2;
+            Q.unemployed_kpd += 1;
+            Q.unemployed_nsdap += 1
+        }
+    }
+!}
+
+[? if Q.spd_won: The collapse of the Bürgerblock should have been a death blow. Instead, it is a stunning victory for the SPD. With the reparations crisis solved, the Nazi movement in decline, and the KPD in disarray, the voters have nowhere else to turn. They flock to the only party that has consistently demonstrated strength and commitment to the Republic. The SPD emerges from the crisis more powerful than ever. ?]
+[? if not Q.spd_won: The recriminations begin immediately. The constitutional parties are in disarray, and the extremists are poised to reap the benefits of the chaos. Chancellor Brüning's position is now all but untenable. ?]
