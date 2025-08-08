@@ -15,44 +15,6 @@ on-display: {!
     var contentDiv = document.querySelector("#page #mid_panel #content");
     if (contentDiv) contentDiv.appendChild(cardEl);
 !}
-
-= <span style="color: #7A3C00;">**SA**</span> Planned Coup Discovered!
-
-Intelligence from Prussian police raids has uncovered a terrifying plot: detailed <span style="color: #7A3C00;">**SA**</span> plans for a coordinated coup in the event of Hindenburg's re-election. Secret orders from Munich reveal preparations to seize government buildings, armories, and key infrastructure across Germany. Brown-shirted paramilitaries have been conducting "exercises" that are clearly dress rehearsals for revolution. The evidence is undeniable - the Nazis are preparing to destroy the Republic by force.
-
-The discovery has thrown the <span style="color: #4A5C2A;">Bürgerblock</span> into crisis. [? if interior_minister == "Wirth": Interior Minister Wirth demands immediate federal action, warning that "democracy's enemies will not hesitate - neither should we."?] [? if interior_minister == "Groener": Interior Minister Groener urges caution, fearing that aggressive moves might destabilize the coalition.?] Meanwhile, the <span style="color: #c00000;">**SPD**</span> opposition watches with grim satisfaction - they warned this day would come.
-
-- @push_federal_ban: Use our government position to push for a nationwide <span style="color: #7A3C00;">**SA**</span> ban!
-- @coalition_consensus: Seek coalition consensus before acting on the <span style="color: #7A3C00;">**SA**</span> threat.
-- @prussian_only: Limit action to Prussia to avoid splitting the <span style="color: #4A5C2A;">Bürgerblock</span>.
-
-@push_federal_ban
-    on-arrival: {!
-        Q.player_choice_sa_ban = "federal";
-    !}
-    go-to: resolve_ban_outcome
-
-@coalition_consensus
-    on-arrival: {!
-        Q.player_choice_sa_ban = "consensus";
-    !}
-    go-to: resolve_ban_outcome
-
-@prussian_only
-    on-arrival: {!
-        Q.player_choice_sa_ban = "prussian";
-        Q.sa_strength *= 0.85;
-        Q.sa_militancy -= 0.05;
-        Q.prussian_police_loyalty += 0.05;
-        Q.dvp_burgerblock_dissent += 0.05;
-        Q.dnvp_burgerblock_dissent += 0.1;
-        Q.left_dissent -= 5;
-    !}
-
-    The <span style="color: #4A5C2A;">Bürgerblock</span> chooses the path of least resistance - maintaining Prussia's existing <span style="color: #7A3C00;">**SA**</span> restrictions while avoiding federal action that might shatter the coalition. Conservative partners breathe sighs of relief, but this half-measure allows brown-shirted paramilitaries to continue drilling and marching across most of Germany.
-    
-
-@resolve_ban_outcome
 on-arrival: {!
     Q.nazi_urgency = (Q.nazi_urgency || 0) + 1;
     Q.sa_ban_attempted_burgerblock = 1;
@@ -81,37 +43,41 @@ on-arrival: {!
     Q.sa_ban_partial = (success_score >= 45 && success_score < 60);
     Q.sa_ban_burgerblock_fails = (success_score < 45);
 !}
-go-to: outcome_success if Q.sa_ban_burgerblock_succeeds; outcome_partial if Q.sa_ban_partial; outcome_failure if Q.sa_ban_burgerblock_fails
+
+= <span style="color: #7A3C00;">**SA**</span> Planned Coup Discovered!
+
+Intelligence from Prussian police raids has uncovered a terrifying plot: detailed <span style="color: #7A3C00;">**SA**</span> plans for a coordinated coup in the event of Hindenburg's re-election. Secret orders from Munich reveal preparations to seize government buildings, armories, and key infrastructure across Germany. Brown-shirted paramilitaries have been conducting "exercises" that are clearly dress rehearsals for revolution. The evidence is undeniable - the Nazis are preparing to destroy the Republic by force.
+
+The discovery has thrown the <span style="color: #4A5C2A;">Bürgerblock</span> into crisis. [? if interior_minister == "Wirth": Interior Minister Wirth demands immediate federal action, warning that "democracy's enemies will not hesitate - neither should we."?] [? if interior_minister == "Groener": Interior Minister Groener urges caution, fearing that aggressive moves might destabilize the coalition.?] Meanwhile, the <span style="color: #c00000;">**SPD**</span> opposition watches with grim satisfaction - they warned this day would come.
+
+- @push_federal_ban: Use our government position to push for a nationwide <span style="color: #7A3C00;">**SA**</span> ban!
+- @coalition_consensus: Seek coalition consensus before acting on the <span style="color: #7A3C00;">**SA**</span> threat.
+- @prussian_only: Limit action to Prussia to avoid splitting the <span style="color: #4A5C2A;">Bürgerblock</span>.
+
+@push_federal_ban
+on-arrival: player_choice_sa_ban = "federal"
+go-to: sa_ban_burgerblock_succeeds == 1 ? outcome_success : (sa_ban_partial == 1 ? outcome_partial : outcome_failure)
+
+@coalition_consensus
+on-arrival: player_choice_sa_ban = "consensus"
+go-to: sa_ban_burgerblock_succeeds == 1 ? outcome_success : (sa_ban_partial == 1 ? outcome_partial : outcome_failure)
+
+@prussian_only
+on-arrival: player_choice_sa_ban = "prussian"; sa_strength *= 0.85; sa_militancy -= 0.05; prussian_police_loyalty += 0.05; dvp_burgerblock_dissent += 0.05; dnvp_burgerblock_dissent += 0.1; left_dissent -= 5
+
+The <span style="color: #4A5C2A;">Bürgerblock</span> chooses the path of least resistance - maintaining Prussia's existing <span style="color: #7A3C00;">**SA**</span> restrictions while avoiding federal action that might shatter the coalition. Conservative partners breathe sighs of relief, but this half-measure allows brown-shirted paramilitaries to continue drilling and marching across most of Germany.
 
 @outcome_success
-    on-arrival: {!
-        Q.sa_strength *= 0.6;
-        Q.sa_militancy -= 0.15;
-        Q.nazi_urgency += 10;
-        Q.hindenburg_angry_bruning += 30;
-    !}
+on-arrival: sa_strength *= 0.6; sa_militancy -= 0.15; nazi_urgency += 10; hindenburg_angry_bruning += 30
 
-    Victory! Despite furious opposition from Hindenburg and the coalition's right wing, the <span style="color: #4A5C2A;">Bürgerblock</span> pushes through a nationwide <span style="color: #7A3C00;">**SA**</span> ban. Storm trooper uniforms disappear from the streets, their meeting halls are shuttered, and their weapons caches seized. Of course, the Nazis adapt quickly - "sports clubs" and "hiking associations" spring up overnight, barely concealing their true purpose. Still, the Republic has finally shown it can bite back. Even we, surely no friends to the bourgeoisie, must concede that this was the right decision.
+Victory! Despite furious opposition from Hindenburg and the coalition's right wing, the <span style="color: #4A5C2A;">Bürgerblock</span> pushes through a nationwide <span style="color: #7A3C00;">**SA**</span> ban. Storm trooper uniforms disappear from the streets, their meeting halls are shuttered, and their weapons caches seized. Of course, the Nazis adapt quickly - "sports clubs" and "hiking associations" spring up overnight, barely concealing their true purpose. Still, the Republic has finally shown it can bite back. Even we, surely no friends to the bourgeoisie, must concede that this was the right decision.
 
 @outcome_partial
-    on-arrival: {!
-        Q.sa_strength *= 0.75;
-        Q.sa_militancy -= 0.10;
-        Q.nazi_urgency += 5;
-        Q.hindenburg_angry_bruning += 15;
-        Q.dvp_burgerblock_dissent += 0.1;
-        Q.dnvp_burgerblock_dissent += 0.15;
-    !}
+on-arrival: sa_strength *= 0.75; sa_militancy -= 0.10; nazi_urgency += 5; hindenburg_angry_bruning += 15; dvp_burgerblock_dissent += 0.1; dnvp_burgerblock_dissent += 0.15
 
-    A messy compromise emerges after days of heated coalition negotiations. The <span style="color: #7A3C00;">**SA**</span> ban passes, but riddled with loopholes demanded by conservative partners. Enforcement proves spotty at best - storm troopers simply change their brown shirts for civilian clothes and continue their activities under transparent cover names. The <span style="color: #4A5C2A;">Bürgerblock</span> frays under the strain of internal arguments, while Hindenberg grows increasingly contemptuous of Brüning's "weak leadership."
-    
+A messy compromise emerges after days of heated coalition negotiations. The <span style="color: #7A3C00;">**SA**</span> ban passes, but riddled with loopholes demanded by conservative partners. Enforcement proves spotty at best - storm troopers simply change their brown shirts for civilian clothes and continue their activities under transparent cover names. The <span style="color: #4A5C2A;">Bürgerblock</span> frays under the strain of internal arguments, while Hindenberg grows increasingly contemptuous of Brüning's "weak leadership."
 
 @outcome_failure
-    on-arrival: {!
-        Q.nazi_prestige += 10;
-        Q.hindenburg_angry_bruning -= 10;
-        Q.burgerblock_stability -= 15;
-        Q.nazi_urgency += 3;
-    !}
+on-arrival: nazi_prestige += 10; hindenburg_angry_bruning -= 10; burgerblock_stability -= 15; nazi_urgency += 3
 
-    Complete humiliation. Faced with Hindenburg's wrath and rebellion from the coalition's right wing, the <span style="color: #7A3C00;">**SA**</span> ban proposal crumbles entirely. The Nazis celebrate openly, with Hitler himself mocking the "cowardly bourgeois parties who cannot even defend themselves, let alone Germany." Brown shirts march with renewed arrogance, knowing the state has blinked first. The <span style="color: #4A5C2A;">Bürgerblock</span> is left deeply fractured and discredited. The bourgeoisie have proven they'd rather preserve their coalition than democracy itself.
+Complete humiliation. Faced with Hindenberg's wrath and rebellion from the coalition's right wing, the <span style="color: #7A3C00;">**SA**</span> ban proposal crumbles entirely. The Nazis celebrate openly, with Hitler himself mocking the "cowardly bourgeois parties who cannot even defend themselves, let alone Germany." Brown shirts march with renewed arrogance, knowing the state has blinked first. The <span style="color: #4A5C2A;">Bürgerblock</span> is left deeply fractured and discredited. The bourgeoisie have proven they'd rather prefer their coalition to democracy itself.
