@@ -56,11 +56,11 @@ The discovery has thrown the <span style="color: #4A5C2A;">Bürgerblock</span> i
 
 @push_federal_ban
 on-arrival: player_choice_sa_ban = "federal"
-go-to: sa_ban_burgerblock_succeeds == 1 ? outcome_success : (sa_ban_partial == 1 ? outcome_partial : outcome_failure)
+go-to: outcome_success if sa_ban_burgerblock_succeeds; outcome_partial if sa_ban_partial; outcome_failure if sa_ban_burgerblock_fails
 
 @coalition_consensus
 on-arrival: player_choice_sa_ban = "consensus"
-go-to: sa_ban_burgerblock_succeeds == 1 ? outcome_success : (sa_ban_partial == 1 ? outcome_partial : outcome_failure)
+go-to: outcome_success if sa_ban_burgerblock_succeeds; outcome_partial if sa_ban_partial; outcome_failure if sa_ban_burgerblock_fails
 
 @prussian_only
 on-arrival: player_choice_sa_ban = "prussian"; sa_strength *= 0.85; sa_militancy -= 0.05; prussian_police_loyalty += 0.05; dvp_burgerblock_dissent += 0.05; dnvp_burgerblock_dissent += 0.1; left_dissent -= 5
