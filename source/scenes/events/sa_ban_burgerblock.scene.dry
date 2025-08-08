@@ -13,7 +13,7 @@ on-display: {!
     image.src = "img/sa_rally.jpg";
     cardEl.appendChild(image);
     var contentDiv = document.querySelector("#page #mid_panel #content");
-    contentDiv.appendChild(cardEl);
+    if (contentDiv) contentDiv.appendChild(cardEl);
 !}
 
 = <span style="color: #7A3C00;">**SA**</span> Planned Coup Discovered!
@@ -25,11 +25,15 @@ With the presidential elections approaching, Prussian Minister of the Interior C
 - @prussian_only: Limit action to Prussia to avoid splitting the <span style="color: #4A5C2A;">Bürgerblock</span>.
 
 @push_federal_ban
-    on-arrival: player_choice_sa_ban = "federal"
+    on-arrival: {!
+        Q.player_choice_sa_ban = "federal";
+    !}
     go-to: @_resolve_ban_outcome
 
 @coalition_consensus
-    on-arrival: player_choice_sa_ban = "consensus"
+    on-arrival: {!
+        Q.player_choice_sa_ban = "consensus";
+    !}
     go-to: @_resolve_ban_outcome
 
 @prussian_only
@@ -48,23 +52,34 @@ With the presidential elections approaching, Prussian Minister of the Interior C
 
 @_resolve_ban_outcome
 on-arrival: {!
-    Q.nazi_urgency += 1;
+    Q.nazi_urgency = (Q.nazi_urgency || 0) + 1;
     Q.sa_ban_attempted_burgerblock = 1;
-    success_score = 30;
-    success_score += Q.interior_police_loyalty * 15;
-    success_score += Q.prussian_police_loyalty * 10; 
-    success_score -= Math.floor(Q.hindenburg_angry_bruning / 3) else success_score += 10;
-    success_score -= Q.dvp_burgerblock_dissent * 40;
-    success_score -= Q.dnvp_burgerblock_dissent * 50;
-    if not spd_prussia success_score += 15;
-    if judiciary_reformed success_score += 12;
-    if interior_minister == "Wirth" success_score += 20;
-    if (Q.interior_minister_party == "Z" || Q.interior_minister_party == "CVP") { success_score += 10; }
-    success_score >== 60 = sa_ban_burgerblock_succeeds
-    Q.sa_ban_partial = (success_score >= 45 && success_score < 60)
-    Q.sa_ban_burgerblock_fails = (success_score < 45)
-}
-go-to: outcome_success if sa_ban_burgerblock_succeeds; outcome_partial if sa_ban_partial; outcome_failure if sa_ban_burgerblock_fails
+
+    var success_score = 30;
+    success_score += (Q.interior_police_loyalty || 0) * 15;
+    success_score += (Q.prussian_police_loyalty || 0) * 10;
+
+    if (typeof Q.hindenburg_angry_bruning === "number") {
+        success_score -= Math.floor(Q.hindenburg_angry_bruning / 3);
+    } else {
+        success_score += 10;
+    }
+
+    success_score -= (Q.dvp_burgerblock_dissent || 0) * 40;
+    success_score -= (Q.dnvp_burgerblock_dissent || 0) * 50;
+
+    if (!Q.spd_prussia) success_score += 15;
+    if (Q.judiciary_reformed) success_score += 12;
+    if (Q.interior_minister === "Wirth") success_score += 20;
+    if (Q.interior_minister_party === "Z" || Q.interior_minister_party === "CVP") {
+        success_score += 10;
+    }
+
+    Q.sa_ban_burgerblock_succeeds = (success_score >= 60);
+    Q.sa_ban_partial = (success_score >= 45 && success_score < 60);
+    Q.sa_ban_burgerblock_fails = (success_score < 45);
+!}
+go-to: outcome_success if Q.sa_ban_burgerblock_succeeds; outcome_partial if Q.sa_ban_partial; outcome_failure if Q.sa_ban_burgerblock_fails
 
 @outcome_success
     on-arrival: {!
@@ -98,4 +113,3 @@ go-to: outcome_success if sa_ban_burgerblock_succeeds; outcome_partial if sa_ban
     !}
 
     Failure. Under intense pressure from President Hindenburg and the right-wing of the <span style="color: #4A5C2A;">Bürgerblock</span>, the proposed ban on the <span style="color: #7A3C00;">**SA**</span> collapses. It is a humiliating defeat for the government and a major propaganda victory for the Nazis, who openly mock the state's weakness. Our coalition is deeply fractured by the attempt.
-    
