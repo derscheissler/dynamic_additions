@@ -30,13 +30,13 @@ The discovery has thrown the <span style="color: #4A5C2A;">Bürgerblock</span> i
     on-arrival: {!
         Q.player_choice_sa_ban = "federal";
     !}
-    go-to: _resolve_ban_outcome
+    go-to: resolve_ban_outcome
 
 @coalition_consensus
     on-arrival: {!
         Q.player_choice_sa_ban = "consensus";
     !}
-    go-to: _resolve_ban_outcome
+    go-to: resolve_ban_outcome
 
 @prussian_only
     on-arrival: {!
